@@ -1,0 +1,48 @@
+Command:
+curl http://localhost:3000/author/Unknown
+
+Output:
+{
+    "4": {
+        "author": "Unknown",
+        "title": "The Epic Of Gilgamesh",
+        "reviews": {}
+    },
+    "5": {
+        "author": "Unknown",
+        "title": "The Book Of Job",
+        "reviews": {}
+    },
+    "6": {
+        "author": "Unknown",
+        "title": "One Thousand and One Nights",
+        "reviews": {}
+    },
+    "7": {
+        "author": "Unknown",
+        "title": "Njál's Saga",
+        "reviews": {}
+    }
+}
+
+---
+
+Command:
+curl http://localhost:3000/author/Jane%20Austen
+
+Output:
+{
+    "8": {
+        "author": "Jane Austen",
+        "title": "Pride and Prejudice",
+        "reviews": {}
+    }
+}
+
+---
+
+Command (Error Case):
+curl http://localhost:3000/author/Shakespeare
+
+Output:
+{"message":"No books found by this author"}

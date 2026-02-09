@@ -1,0 +1,17 @@
+Command:
+curl -X DELETE "http://localhost:3000/customer/auth/review/1" -b cookies.txt
+
+Output:
+{"message":"Review successfully deleted"}
+
+Note: Requires authentication. Users can only delete their own reviews.
+
+---
+
+Command (Error - No review found):
+curl -X DELETE "http://localhost:3000/customer/auth/review/5" -b cookies.txt
+
+Output:
+{"message":"No review found for this user"}
+
+Note: Returns error if user hasn't reviewed that book.

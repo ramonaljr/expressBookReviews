@@ -1,0 +1,21 @@
+Command:
+curl -X POST http://localhost:3000/register -H "Content-Type: application/json" -d '{"username":"testuser","password":"password123"}'
+
+Output:
+{"message":"User successfully registered. Now you can login"}
+
+---
+
+Command (Error - Missing password):
+curl -X POST http://localhost:3000/register -H "Content-Type: application/json" -d '{"username":"testuser"}'
+
+Output:
+{"message":"Username and password are required"}
+
+---
+
+Command (Error - Duplicate username):
+curl -X POST http://localhost:3000/register -H "Content-Type: application/json" -d '{"username":"testuser","password":"password123"}'
+
+Output:
+{"message":"Username already exists"}

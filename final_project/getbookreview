@@ -1,0 +1,7 @@
+Command:
+curl http://localhost:3000/review/1
+
+Output:
+{}
+
+Note: Empty object because no reviews have been added yet. Reviews will be added in Task 8.

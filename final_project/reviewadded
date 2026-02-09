@@ -1,0 +1,19 @@
+Command:
+curl -X PUT "http://localhost:3000/customer/auth/review/1?review=Great%20book!" -b cookies.txt
+
+Output:
+{"message":"Review successfully added/updated"}
+
+Note: Requires authentication (login first and save cookies with -c cookies.txt, then use -b cookies.txt)
+
+---
+
+Verification Command:
+curl http://localhost:3000/review/1
+
+Output:
+{
+    "john": "Great book!"
+}
+
+Note: The review is stored with the username as the key, allowing multiple users to review the same book.

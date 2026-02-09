@@ -1,0 +1,15 @@
+Command:
+curl -X POST http://localhost:3000/customer/login -H "Content-Type: application/json" -d '{"username":"john","password":"pass123"}'
+
+Output:
+{"message":"User successfully logged in"}
+
+Note: This creates a session with JWT token for authenticated routes.
+
+---
+
+Command (Error - Invalid credentials):
+curl -X POST http://localhost:3000/customer/login -H "Content-Type: application/json" -d '{"username":"john","password":"wrongpass"}'
+
+Output:
+{"message":"Invalid username or password"}
