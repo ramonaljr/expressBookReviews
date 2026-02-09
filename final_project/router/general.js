@@ -25,64 +25,97 @@ public_users.post("/register", (req, res) => {
   return res.status(200).json({ message: "User successfully registered. Now you can login" });
 });
 
-// Get the book list available in the shop
-public_users.get('/', function (req, res) {
-  res.send(JSON.stringify(books, null, 4));
-});
+// Task 10: Get the book list available in the shop using async-await
+const getAllBooks = () => {
+  return new Promise((resolve, reject) => {
+    resolve(books);
+  });
+};
 
-// Get book details based on ISBN
-public_users.get('/isbn/:isbn', function (req, res) {
-  const isbn = req.params.isbn; // Get ISN from URL
-  const book = books[isbn]; // Look up the book
-
-  if (book) {
-    res.send(JSON.stringify(book, null, 4)); // Book found
-  } else {
-    res.status(404).json({ message: "Book not found" }) // Book not found
+public_users.get('/', async function (req, res) {
+  try {
+    const bookList = await getAllBooks();
+    res.send(JSON.stringify(bookList, null, 4));
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching books" });
   }
 });
 
-// Get book details based on author
-public_users.get('/author/:author', function (req, res) {
-  const author = req.params.author // Get author from URL
-  let matchingBooks = {}; // Store matching books
-
-  // Loop through all books
-  Object.keys(books).forEach((isbn) => {
-    // isbn will be "1", "2", "3", etc.
-    let book = books[isbn]; // Get the actual book object
-
-    // Check if this book's aauthor matches
-    if (book.author === author) {
-      matchingBooks[isbn] = book; // Add to results
+// Task 11: Get book details based on ISBN using async-await
+const getBookByISBN = (isbn) => {
+  return new Promise((resolve, reject) => {
+    const book = books[isbn];
+    if (book) {
+      resolve(book);
+    } else {
+      reject({ message: "Book not found" });
     }
   });
+};
 
-  // Return results or error
-  if (Object.keys(matchingBooks).length > 0) {
-    res.send(JSON.stringify(matchingBooks, null, 4));
-  } else {
-    res.status(404).json({ message: "No books found by this author" });
+public_users.get('/isbn/:isbn', async function (req, res) {
+  const isbn = req.params.isbn;
+  try {
+    const book = await getBookByISBN(isbn);
+    res.send(JSON.stringify(book, null, 4));
+  } catch (error) {
+    res.status(404).json(error);
   }
 });
 
-// Get all books based on title
-public_users.get('/title/:title', function (req, res) {
+// Task 12: Get book details based on author using async-await
+const getBooksByAuthor = (author) => {
+  return new Promise((resolve, reject) => {
+    let matchingBooks = {};
+    Object.keys(books).forEach((isbn) => {
+      if (books[isbn].author === author) {
+        matchingBooks[isbn] = books[isbn];
+      }
+    });
+
+    if (Object.keys(matchingBooks).length > 0) {
+      resolve(matchingBooks);
+    } else {
+      reject({ message: "No books found by this author" });
+    }
+  });
+};
+
+public_users.get('/author/:author', async function (req, res) {
+  const author = req.params.author;
+  try {
+    const matchingBooks = await getBooksByAuthor(author);
+    res.send(JSON.stringify(matchingBooks, null, 4));
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+
+// Task 13: Get all books based on title using async-await
+const getBooksByTitle = (title) => {
+  return new Promise((resolve, reject) => {
+    let matchingBooks = {};
+    Object.keys(books).forEach((isbn) => {
+      if (books[isbn].title === title) {
+        matchingBooks[isbn] = books[isbn];
+      }
+    });
+
+    if (Object.keys(matchingBooks).length > 0) {
+      resolve(matchingBooks);
+    } else {
+      reject({ message: "No books found with this title" });
+    }
+  });
+};
+
+public_users.get('/title/:title', async function (req, res) {
   const title = req.params.title;
-  let matchingBooks = {};
-
-  // Loop through all books
-  Object.keys(books).forEach((isbn) => {
-    if (books[isbn].title === title) {
-      matchingBooks[isbn] = books[isbn];
-    }
-  });
-
-  // Return results or error
-  if (Object.keys(matchingBooks).length > 0) {
+  try {
+    const matchingBooks = await getBooksByTitle(title);
     res.send(JSON.stringify(matchingBooks, null, 4));
-  } else {
-    res.status(404).json({ message: "No books found with this title" });
+  } catch (error) {
+    res.status(404).json(error);
   }
 });
 
