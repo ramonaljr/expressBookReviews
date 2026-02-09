@@ -1,0 +1,29 @@
+Command:
+curl http://localhost:3000/isbn/3
+
+Output:
+{
+    "author": "Dante Alighieri",
+    "title": "The Divine Comedy",
+    "reviews": {}
+}
+
+---
+
+Command:
+curl http://localhost:3000/isbn/8
+
+Output:
+{
+    "author": "Jane Austen",
+    "title": "Pride and Prejudice",
+    "reviews": {}
+}
+
+---
+
+Command (Error Case):
+curl http://localhost:3000/isbn/999
+
+Output:
+{"message":"Book not found"}
